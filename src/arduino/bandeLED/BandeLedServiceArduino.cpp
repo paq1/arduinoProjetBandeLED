@@ -1,7 +1,10 @@
 #include "BandeLedServiceArduino.hpp"
 
-BandeLedServiceArduino::BandeLedServiceArduino(Adafruit_NeoPixel& pixels)
-: m_pixels(pixels) {
+BandeLedServiceArduino::BandeLedServiceArduino(
+    Adafruit_NeoPixel& pixels, 
+    unsigned int nbPixels)
+: m_pixels(pixels)
+, m_nbPixels(nbPixels) {
     pixels.begin();
 }
 
@@ -17,6 +20,12 @@ BandeLedServiceArduino::BandeLedServiceArduino(Adafruit_NeoPixel& pixels)
     int index
 ) {
     m_pixels.setPixelColor(index, m_pixels.Color(0,0,0));
+}
+
+/*virtual*/void BandeLedServiceArduino::cleanAll() {
+    for (unsigned int i(0); i < m_nbPixels; i++) {
+        cleanAt(i);
+    }
 }
 
 /*virtual*/void BandeLedServiceArduino::show() {

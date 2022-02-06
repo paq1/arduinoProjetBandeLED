@@ -23,7 +23,7 @@ LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 // services
 StringServiceImpl stringService;
 TimeServiceImpl timeService;
-BandeLedServiceArduino bandeLedServiceArduino(pixels);
+BandeLedServiceArduino bandeLedServiceArduino(pixels, NUMPIXELS);
 EcranServiceLiquid ecranServiceLiquid(lcd);
 
 // behaviors
@@ -31,7 +31,7 @@ AllerRetourBehavior allerRetourBehavior(stringService, bandeLedServiceArduino, N
 OneByOneBehavior oneByOneBehavior(stringService, bandeLedServiceArduino, NUMPIXELS, 0.03);
 
 BehaviorHandlerImpl behaviorHandler(ecranServiceLiquid, stringService, timeService);
-OnSwitchModeListener onSwitchModeListener(ecranServiceLiquid, behaviorHandler);
+OnSwitchModeListener onSwitchModeListener(ecranServiceLiquid, behaviorHandler, bandeLedServiceArduino);
 
 void setup() {
   buttonSwitchMode = new ArduinoButton(onSwitchModeListener, PIN_BTN);
