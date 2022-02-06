@@ -2,10 +2,13 @@
 
 #include <stdlib.h>
 
-BehaviorHandlerImpl::BehaviorHandlerImpl()
+BehaviorHandlerImpl::BehaviorHandlerImpl(EcranService& ecranService, StringService& stringService, TimeService& timeService)
 : m_behaviors(nullptr)
 , m_taille(0)
-, m_current(0) {}
+, m_current(0)
+, m_ecranService(ecranService)
+, m_stringService(stringService)
+, m_timeService(timeService) {}
 
 /*virtual*/void BehaviorHandlerImpl::swichMode() {
     m_current = (m_current + 1) % m_taille;
@@ -32,4 +35,24 @@ BehaviorHandlerImpl::BehaviorHandlerImpl()
     }
 
     m_taille++;
+}
+
+/*virtual*/void BehaviorHandlerImpl::update(double dt) {
+    currentBehavior()->action(dt);
+    afficheInfos();
+}
+
+void BehaviorHandlerImpl::afficheInfos() {
+    m_ecranService.afficheMessage(currentBehavior()->getName(), 0);
+    // on affiche le temps d'execution en seconde
+    // TODO Ajouter le temps
+    char * str_temps = m_stringService.intToString((int) m_timeService.getTimeSecond());
+    char * message = m_stringService.concat("time : ", str_temps);
+    char * message_avec_unites = m_stringService.concat(message, " sec");
+    m_ecranService.afficheMessage(message_avec_unites, 1);
+
+    // on supprime le message de la memoire
+    delete str_temps;
+    delete message;
+    delete message_avec_unites;
 }
