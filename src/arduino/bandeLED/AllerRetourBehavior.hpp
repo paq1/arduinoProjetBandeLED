@@ -19,6 +19,6 @@ public:
         int taille, 
         double dureeAnimation
     );
-    
+    virtual ~AllerRetourBehavior() {}
     virtual void action(double dt);
 };

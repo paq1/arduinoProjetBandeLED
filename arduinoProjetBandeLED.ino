@@ -28,7 +28,7 @@ EcranServiceLiquid ecranServiceLiquid(lcd);
 
 // behaviors
 AllerRetourBehavior allerRetourBehavior(stringService, bandeLedServiceArduino, NUMPIXELS, 0.03);
-OneByOneBehavior oneByOneBehavior(stringService, bandeLedServiceArduino, NUMPIXELS, 0.03);
+OneByOneBehavior oneByOneBehavior(stringService, bandeLedServiceArduino, NUMPIXELS, 0.003);
 
 BehaviorHandlerImpl behaviorHandler(ecranServiceLiquid, stringService, timeService);
 OnSwitchModeListener onSwitchModeListener(ecranServiceLiquid, behaviorHandler, bandeLedServiceArduino);

@@ -41,6 +41,4 @@ AllerRetourBehavior::AllerRetourBehavior(
         m_bandeLedService.setColorAt(Couleur(255, 0, 0), m_current_index);
         m_bandeLedService.show();
     }
-
-    
 }

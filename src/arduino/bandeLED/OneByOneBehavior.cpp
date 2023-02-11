@@ -1,5 +1,7 @@
 #include "OneByOneBehavior.hpp"
 
+#include "../factories/CouleurFactory.h"
+
 OneByOneBehavior::OneByOneBehavior(
     StringService& stringService,
     BandeLedService& bandeLedService, 
@@ -12,35 +14,36 @@ OneByOneBehavior::OneByOneBehavior(
 , m_timer(0.0)
 , m_current_index(0)
 , m_sens(true)
-, m_dureeAnimation(dureeAnimation) {}
+, m_dureeAnimation(dureeAnimation)
+, m_nb_allume(0) {}
 
 /*virtual*/void OneByOneBehavior::action(
     double dt
 ) {
+    update(dt);
+}
+
+void OneByOneBehavior::update(double dt) {
     m_timer += dt;
     if (m_timer > m_dureeAnimation) {
         m_timer = 0;
-
-        // on eteint le pixel
-        m_bandeLedService.cleanAt(m_current_index);
-
-        // on incremente le pixel courant
-
-        if (m_sens && m_current_index < m_taille - 1) m_current_index++;
-        if (!m_sens && m_current_index > 0) m_current_index--;
-
-        if (m_current_index >= m_taille - 1 && m_sens) {
-            m_sens = !m_sens;
+        // on allume jusqu'au m_taille - 1 - m_nbAllume (et on laisse la dernière allumé)
+        const int lastId = m_taille - m_nb_allume - 1;
+        if (m_current_index < lastId - 1) {
+            // on allume la suivante
+            m_current_index++;
+            m_bandeLedService.setColorAt(CouleurFactory::get_instance().get_purple(), m_current_index);
+            // on eteind la precedente
+            m_bandeLedService.cleanAt(m_current_index - 1);
+            if (m_current_index == lastId - 1) {
+                m_nb_allume++;
+                m_current_index = 0;
+            }
+        } else {
+            m_bandeLedService.cleanAll();
+            m_current_index = 0;
+            m_nb_allume = 0;
         }
-
-        if (m_current_index == 0 && !m_sens) {
-            m_sens = !m_sens;
-        }
-
-        // on allume le pixel
-        m_bandeLedService.setColorAt(Couleur(0, 255, 0), m_current_index);
         m_bandeLedService.show();
     }
-
-    
 }

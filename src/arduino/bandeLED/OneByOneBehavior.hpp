@@ -12,6 +12,7 @@ private:
     int m_current_index;
     bool m_sens;
     double m_dureeAnimation;
+    int m_nb_allume;
 public:
     OneByOneBehavior(
         StringService& stringService,
@@ -21,4 +22,6 @@ public:
     );
     
     virtual void action(double dt);
+private:
+    void update(double dt);
 };
